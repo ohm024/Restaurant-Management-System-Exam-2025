@@ -178,8 +178,8 @@
 
 | รายการ | ค่าจริง |
 |--------|--------|
-| Collection Name | `RMS-[รหัสนักศึกษา]-TestSuite` |
-| ไฟล์ที่ Export ไปไว้ใน Repository | `tests/postman/RMS-[รหัสนักศึกษา]-TestSuite.json` |
+| Collection Name | `RMS-68030319-TestSuite` |
+| ไฟล์ที่ Export ไปไว้ใน Repository | `tests/postman/RMS-68030319-TestSuite.json` |
 | ไฟล์ Environment | `tests/postman/env.json` |
 
 > 📌 Repository มี Newman Collection 21 test cases ใน `tests/postman/` อยู่แล้ว  
@@ -208,7 +208,7 @@
 > });
 > ```
 
-**✏️ ยืนยันว่าทุก Request มี pm.test แล้ว:** ☐ ใช่
+**✏️ ยืนยันว่าทุก Request มี pm.test แล้ว:** ✅ ใช่
 
 #### สรุปผลการรัน Postman (กรอกหลังรัน Collection Run)
 
@@ -216,11 +216,11 @@
 
 | Request Name | Method | Endpoint | Actual Result | Pass/Fail |
 |-------------|--------|----------|--------------|-----------|
-| | | | | ☐ |
-| | | | | ☐ |
-| | | | | ☐ |
+| Health Check | GET | /api/health | Status 200 OK และแสดงข้อความ API running |  ✅Pass |
+| Login Admin | POST | /api/auth/login | Login สำเร็จและได้รับ JWT Token |  ✅Pass |
+| Get Orders | GET | /api/orders | ดึงข้อมูล Orders สำเร็จ |  ✅Pass |
 
-**✏️ สรุป:** ผ่าน ___ / ___ Request
+**✏️ สรุป:** ผ่าน 3 / 3 Request
 
 #### หลักฐานภาพหน้าจอ Postman
 
@@ -228,11 +228,12 @@
 
 **รูปที่ 1 — Postman Collection และ Environment Variables (แสดง `base_url`, `token`, `admin_token` ครบ)**
 
-`![Postman Collection + Env Vars](./tests/reports/postman-collection-env.png)`
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/b39711d2-258f-4ad2-bea8-3fb6cc59716f" />
 
 **รูปที่ 2 — ผล Postman Collection Run (แสดง Pass/Fail ทุก Request)**
 
-`![Postman Run Result](./tests/reports/postman-run-result.png)`
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/fee3fbf5-a6a2-488c-8de7-67c19b6698fe" />
+
 
 ---
 
