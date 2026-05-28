@@ -7,9 +7,9 @@
 
 | รายการ | ข้อมูล |
 |--------|--------|
-| ชื่อ-นามสกุล | |
-| รหัสนักศึกษา | |
-| วันที่สอบ | |
+| ชื่อ-นามสกุล |นายอัครพนธ์ อรุณ |
+| รหัสนักศึกษา |68030319 |
+| วันที่สอบ |28/05/2569 |
 
 ---
 
@@ -18,7 +18,7 @@
 ระบบจัดการร้านอาหาร (Restaurant Management System: RMS) เป็นระบบสำหรับจัดการเมนู การรับออเดอร์ การชำระเงิน และรายงานยอดขาย
 
 **Source Repository:** `https://github.com/surachai-p/Restaurant-Management-System-Exam-2025.git`  
-**✏️ Student Repository:** `https://github.com/[แทนที่ด้วยรหัสนักศึกษาของตนเอง]/Restaurant-Management-System-Exam-2025.git`
+**✏️ Student Repository:** `https://github.com/68030319/Restaurant-Management-System-Exam-2025.git`
 
 ---
 
@@ -60,19 +60,19 @@
 
 | Feature | เหตุผลที่ทดสอบ |
 |---------|----------------|
-| Auth | |
-| Menu | |
-| Order | |
-| Payment | |
-| Report | |
-| Security | |
+| Auth | เพื่อป้องกันผู้ไม่มีสิทธิ์เข้าถึงระบบ |
+| Menu | เพื่อให้ลูกค้ามีข้อมูลอาหารที่ถูกต้องในการสั่ง |
+| Order | เป็นหัวใจหลักของแอปพลิเคชันในการสร้างรายได้ |
+| Payment | เพื่อรับประกันความถูกต้องของการเงินและเงินทอน |
+| Report | เพื่อให้เจ้าของร้านดูยอดขายประจำวันได้ |
+| Security | เพื่ออุดช่องโหว่ ป้องกันข้อมูลรั่วไหล |
 
 #### Out of Scope
 **✏️ ระบุสิ่งที่ไม่ทดสอบและเหตุผล อย่างน้อย 1 รายการ**
 
 | Feature / ขอบเขตที่ไม่ทดสอบ | เหตุผล |
 |-----------------------------|--------|
-| | |
+| Payroll | ไม่อยู่ในขอบเขต (Requirements) ของระบบ |
 | | |
 
 ---
@@ -97,13 +97,13 @@
 
 | รายการ | เวอร์ชัน / ค่า |
 |--------|---------------|
-| OS | |
-| Node.js | |
-| npm | |
-| Docker | |
+| OS | Windows 11 |
+| Node.js | v24.14.0 |
+| npm | 11.9.0 |
+| Docker | version 29.4.3, build 055a478 |
 | PostgreSQL | 16 (Neon.tech) |
-| Browser | |
-| Newman | |
+| Browser | Google Chrome v120+ |
+| Newman | 6.2.2 |
 
 ---
 
@@ -133,8 +133,8 @@
 
 | # | Feature ที่มีความเสี่ยง | ผลกระทบหากเกิดความผิดพลาด | ระดับความเสี่ยง |
 |---|------------------------|--------------------------|----------------|
-| 1 | | | |
-| 2 | | | |
+| 1 | Payment คำนวณเงินผิด | ระบบคำนวณเงินทอนผิดพลาด หรือรับยอดชำระไม่ครบ ทำให้ร้านสูญเสียรายได้ | Critical |
+| 2 | Auth (Role) หละหลวม | พนักงานเสิร์ฟสามารถเข้าถึงฟังก์ชันลบเมนูหรือดูรายงานยอดขายของ Admin ได้ ทำให้ข้อมูลทางธุรกิจเสียหาย | High |
 | 3 | | | |
 
 ---
@@ -153,13 +153,13 @@
 | TC-002 | Negative | Auth | Login ด้วย password ผิด | `{username: "admin", password: "wrong"}` | HTTP 401 Unauthorized | | ☐ |
 | TC-003 | Security | Auth | เรียก API โดยไม่มี JWT Token | GET /api/orders (no Authorization header) | HTTP 401 Unauthorized | | ☐ |
 | TC-004 | Edge | Payment | ชำระเงินพอดียอด (change = 0) | `{orderId: 1, amount: exactTotal}` | HTTP 200 + change = 0 | | ☐ |
-| TC-005 | Positive | | | | | | ☐ |
-| TC-006 | Positive | | | | | | ☐ |
-| TC-007 | Negative | | | | | | ☐ |
-| TC-008 | Negative | | | | | | ☐ |
-| TC-009 | Security | | | | | | ☐ |
-| TC-010 | Security | | | | | | ☐ |
-| TC-011 | Edge | | | | | | ☐ |
+| TC-005 | Positive | Menu | Admin เพิ่มเมนูใหม่สำเร็จ | {name: "Burger", price: 100} | HTTP 201 Created | HTTP 201 | ☐ |
+| TC-006 | Positive | Order | เปิดโต๊ะใหม่สำเร็จ | {tableId: 5} | HTTP 201 Created | HTTP 201 | ☐ |
+| TC-007 | Negative | Payment | ชำระเงินไม่ครบ (Underpayment) | {amount: ยอดที่น้อยกว่าค่าอาหาร} | HTTP 400 Bad Request | HTTP 200 (Bug!) | ☐ |
+| TC-008 | Negative | Menu | สร้างเมนูโดยไม่ใส่ชื่อ | {price: 100} | HTTP 400 Bad Request | HTTP 400 | ☐ |
+| TC-009 | Security | Auth | Waiter ลบเมนู (ตรวจสอบสิทธิ์) | DELETE /api/menu/1 (Token Waiter) | HTTP 403 Forbidden | HTTP 403 | ☐ |
+| TC-010 | Security | Security | SQL Injection ที่ช่อง Login | {username: "admin' OR 1=1--"} | HTTP 401 / 400 | HTTP 401| ☐ |
+| TC-011 | Edge | Order | สั่งอาหารจำนวน 0 ชิ้น | {itemId: 1, quantity: 0} | HTTP 400 Bad Request | HTTP 400 | ☐ |
 
 **✏️ สรุปผล:** ผ่าน ___ / ___ กรณี (___%)
 
